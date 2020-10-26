@@ -1,0 +1,8 @@
+F:\Projects\Ships-Sketch-Rep\Ships_Sketch\Ships\Debug\Ships.exe
+F:\Projects\Ships-Sketch-Rep\Ships_Sketch\Ships\Debug\Ships.pdb
+F:\Projects\Ships-Copy\Debug\Ships.exe
+F:\Projects\Ships-Copy\Debug\Ships.pdb
+F:\Projects\Ships\Debug\Ships.exe
+F:\Projects\Ships\Debug\Ships.pdb
+F:\Projects\ProjectShips\Debug\Ships.exe
+F:\Projects\ProjectShips\Debug\Ships.pdb
