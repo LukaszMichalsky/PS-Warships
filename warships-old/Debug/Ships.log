@@ -1,4 +1,0 @@
-﻿  main.cpp
-F:\Projects\ProjectShips\Some_functions.h(12,13): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
-F:\Projects\ProjectShips\Some_functions.h(20,13): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
-  Ships.vcxproj -> F:\Projects\ProjectShips\Debug\Ships.exe
