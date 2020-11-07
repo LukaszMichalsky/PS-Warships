@@ -1,0 +1,2 @@
+C:\Users\Aquaver\Documents\GitHub\PS-Warships\warships-new\Debug\warships-new.exe
+C:\Users\Aquaver\Documents\GitHub\PS-Warships\warships-new\Debug\warships-new.pdb
