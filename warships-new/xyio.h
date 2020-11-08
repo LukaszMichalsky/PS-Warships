@@ -26,16 +26,16 @@ extern "C" {
 
 class xyio {
 	public:
-		static void setcursor(int x, int y);
-		static void getcursor(int* x, int* y);
+		static void setcursor(int x, int y); // Ustaw kursor w zadanym miejscu
+		static void getcursor(int* x, int* y); // Pobierz współrzędne kursora
 
-		static void getrange(int* maxx, int* maxy);
+		static void getrange(int* maxx, int* maxy); // Pobierz zakres współrzędnych (wielkość dostępnego bufora konsoli)
 		static void getscreen(int* xorg, int* yorg, int* xend, int* yend);
 
-		static int xyscanf(int x, int y, const char* format, ...);
-		static int xyprintf(int x, int y, const char* format, ...);
+		static int xyscanf(int x, int y, const char* format, ...); // Wczytaj tekst z zadanej pozycji
+		static int xyprintf(int x, int y, const char* format, ...); // Wyświetl tekst w zadanej pozycji
 
-		static void clear(void);
+		static void clear(void); // Wyczyść ekran (bufor konsoli)
 };
 
 #ifdef __cplusplus
