@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -140,9 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="xyio.cc" />
+    <ClCompile Include="point.cpp" />
+    <ClCompile Include="ship.cpp" />
+    <ClCompile Include="xyio.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="point.h" />
+    <ClInclude Include="ship-state.h" />
+    <ClInclude Include="ship.h" />
     <ClInclude Include="xyio.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
