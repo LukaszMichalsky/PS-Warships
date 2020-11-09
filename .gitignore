@@ -2,6 +2,8 @@
 
 /warships-old/.vs/*
 /warships-old/Debug/*
+/warships-old/x64/Debug/*
 
 /warships-new/.vs/*
 /warships-new/Debug/*
+/warships-new/x64/Debug/*
