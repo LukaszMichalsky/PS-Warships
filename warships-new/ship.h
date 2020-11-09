@@ -5,16 +5,16 @@
 
 class Ship {
 	private:
-		Point shipPoint = Point(0, 0);
-		ShipState shipState = ShipState::STATE_NOT_HIT; // By default, new ship is not hit
+		Point shipPoint = Point();
+		ShipState shipState = ShipState::STATE_EMPTY; // By default, field is empty
 
 	public:
-		Ship(Point newPoint = Point(0, 0), ShipState newState = ShipState::STATE_NOT_HIT);
+		Ship(Point newPoint = Point(0, 0), ShipState newState = ShipState::STATE_EMPTY);
 		~Ship();
 
 		Point getPoint();
 		ShipState getShipState();
 
-		void setPoint(Point newPoint = Point(0, 0));
-		void setShipState(ShipState newState = ShipState::STATE_NOT_HIT);
+		void setPoint(Point newPoint = Point());
+		void setShipState(ShipState newState = ShipState::STATE_EMPTY);
 };

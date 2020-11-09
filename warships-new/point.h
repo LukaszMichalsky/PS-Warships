@@ -1,4 +1,5 @@
 #pragma once
+
 class Point {
 	private:
 		short X = 0;

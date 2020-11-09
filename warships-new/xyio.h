@@ -1,8 +1,10 @@
 #pragma once
 #pragma warning(disable:4244)
 #pragma warning(disable:4996 4005)
+
 #define _CRT_SECURE_NO_WARNINGS
 #define _USE_MATH_DEFINES
+
 #ifdef UNICODE
 # undef UNICODE
 # define _MBCS
@@ -26,16 +28,16 @@ extern "C" {
 
 class xyio {
 	public:
-		static void setcursor(int x, int y); // Ustaw kursor w zadanym miejscu
-		static void getcursor(int* x, int* y); // Pobierz współrzędne kursora
+		static void setcursor(int x, int y);
+		static void getcursor(int* x, int* y);
 
-		static void getrange(int* maxx, int* maxy); // Pobierz zakres współrzędnych (wielkość dostępnego bufora konsoli)
+		static void getrange(int* maxx, int* maxy);
 		static void getscreen(int* xorg, int* yorg, int* xend, int* yend);
 
-		static int xyscanf(int x, int y, const char* format, ...); // Wczytaj tekst z zadanej pozycji
-		static int xyprintf(int x, int y, const char* format, ...); // Wyświetl tekst w zadanej pozycji
+		static int xyscanf(int x, int y, const char* format, ...);
+		static int xyprintf(int x, int y, const char* format, ...);
 
-		static void clear(void); // Wyczyść ekran (bufor konsoli)
+		static void clear(void);
 };
 
 #ifdef __cplusplus
