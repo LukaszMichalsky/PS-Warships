@@ -4,23 +4,34 @@
 
 #include <vector>
 
+enum class BoardCharacters : char {
+	BOARD_HORIZONTAL_LINE = '-',
+	BOARD_VERTICAL_LINE = '|',
+
+	SHIP_EMPTY = ' ',
+	SHIP_HIT = 'X',
+	SHIP_MISSED_HIT = 'O',
+	SHIP_NOT_HIT = '#'
+};
+
 class Board {
 	private:
 		Ship** boardTable = nullptr;
-		short boardSize = 0;
+		unsigned short boardSize = 0;
 
 		bool checkPointInBoard(Point point = Point());
 
 	public:
-		Board(short newBoardSize = 10);
+		Board(unsigned short newBoardSize = 10);
 		~Board();
 
 		Board(const Board&) = delete; // Removing copy constructor and operator
 		Board& operator= (const Board&) = delete;
 
 		Ship getShip(Point point = Point());
-		short getBoardSize();
+		unsigned short getBoardSize();
 
+		void drawBoard(int x, int y);
 		bool setShip(Ship origin = Ship());
 		void fillShips(ShipState newState = ShipState::STATE_EMPTY); // Fills entire board with given ship (may be used to create empty board)
 

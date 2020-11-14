@@ -1,17 +1,20 @@
 #include "board.h"
+#include "xyio.h"
 
-Board::Board(short newBoardSize) {
+#include <string>
+
+Board::Board(unsigned short newBoardSize) {
 	boardSize = newBoardSize;
 	boardTable = new Ship*[newBoardSize];
 
-	for (short s = 0; s < boardSize; s++) {
+	for (unsigned short s = 0; s < boardSize; s++) {
 		boardTable[s] = new Ship[boardSize];
 	}
 }
 
 Board::~Board() {
 	if (boardTable != nullptr) {
-		for (short s = 0; s < boardSize; s++) {
+		for (unsigned short s = 0; s < boardSize; s++) {
 			delete[] boardTable[s];
 			boardTable[s] = nullptr;
 		}
@@ -41,8 +44,37 @@ Ship Board::getShip(Point point) {
 	}
 }
 
-short Board::getBoardSize() {
+unsigned short Board::getBoardSize() {
 	return boardSize;
+}
+
+void Board::drawBoard(int x, int y) {
+	for (unsigned short s = 0; s < boardSize + 1; s++) {
+		xyio::xyprintf(x, y + 1 + 2 * s, std::string(4 + 4 * ((size_t) boardSize), (char) BoardCharacters::BOARD_HORIZONTAL_LINE).c_str());
+
+		for (unsigned short t = 0; t < boardSize + 1; t++) {
+			char shipCharacter = (char) BoardCharacters::SHIP_EMPTY;
+			ShipState shipState = getShip(Point(s - 1, t - 1)).getShipState();
+
+			if (shipState == ShipState::STATE_HIT) {
+				shipCharacter = (char) BoardCharacters::SHIP_HIT;
+			} else if (shipState == ShipState::STATE_MISSED_HIT) {
+				shipCharacter = (char) BoardCharacters::SHIP_MISSED_HIT;
+			} else if (shipState == ShipState::STATE_NOT_HIT) {
+				shipCharacter = (char) BoardCharacters::SHIP_NOT_HIT;
+			}
+
+			xyio::xyprintf(x + 4 * t, y + 2 * s, " %c %c", shipCharacter, (char) BoardCharacters::BOARD_VERTICAL_LINE);
+
+			if (s > 0 && t == 0) {
+				xyio::xyprintf(x, y + 2 * s, "%2d", s);
+			}
+
+			if (s == 0 && t > 0) {
+				xyio::xyprintf(x + 4 * t, y + 2 * s, " %c ", 96 + t);
+			}
+		}
+	}
 }
 
 bool Board::setShip(Ship origin) {
@@ -59,8 +91,8 @@ bool Board::setShip(Ship origin) {
 }
 
 void Board::fillShips(ShipState newState) {
-	for (short x = 0; x < boardSize; x++) {
-		for (short y = 0; y < boardSize; y++) {
+	for (unsigned short x = 0; x < boardSize; x++) {
+		for (unsigned short y = 0; y < boardSize; y++) {
 			setShip(Ship(Point(x, y), newState));
 		}
 	}
