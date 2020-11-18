@@ -1,57 +1,57 @@
 #include "xyio.h"
 
 void xyio::setcursor(int x, int y) {
-	HANDLE ekran = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD punkt = { (SHORT)x, (SHORT)y };
-	SetConsoleCursorPosition(ekran, punkt);
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD point = { (SHORT)x, (SHORT)y };
+	SetConsoleCursorPosition(screen, point);
 }
 
 void xyio::getcursor(int* x, int* y) {
-	HANDLE ekran = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO bufor;
-	GetConsoleScreenBufferInfo(ekran, &bufor);
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO buffer;
+	GetConsoleScreenBufferInfo(screen, &buffer);
 
-	*x = bufor.dwCursorPosition.X;
-	*y = bufor.dwCursorPosition.Y;
+	*x = buffer.dwCursorPosition.X;
+	*y = buffer.dwCursorPosition.Y;
 }
 
 void xyio::getrange(int* maxx, int* maxy) {
-	HANDLE ekran = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO bufor;
-	GetConsoleScreenBufferInfo(ekran, &bufor);
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO buffer;
+	GetConsoleScreenBufferInfo(screen, &buffer);
 
-	*maxx = bufor.dwMaximumWindowSize.X;
-	*maxy = bufor.dwMaximumWindowSize.Y;
+	*maxx = buffer.dwMaximumWindowSize.X;
+	*maxy = buffer.dwMaximumWindowSize.Y;
 }
 
 void xyio::getscreen(int* xorg, int* yorg, int* xend, int* yend) {
-	HANDLE ekran = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO bufor;
-	GetConsoleScreenBufferInfo(ekran, &bufor);
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO buffer;
+	GetConsoleScreenBufferInfo(screen, &buffer);
 
-	*xorg = bufor.srWindow.Left;
-	*yorg = bufor.srWindow.Top;
-	*xend = bufor.srWindow.Right;
-	*yend = bufor.srWindow.Bottom;
+	*xorg = buffer.srWindow.Left;
+	*yorg = buffer.srWindow.Top;
+	*xend = buffer.srWindow.Right;
+	*yend = buffer.srWindow.Bottom;
 }
 
 int xyio::xyscanf(int x, int y, const char* format, ...) {
-	HANDLE klawiatura = GetStdHandle(STD_INPUT_HANDLE);
-	char tekst[150];
-	DWORD znaki;
-	BOOL sukces;
+	HANDLE keyboard = GetStdHandle(STD_INPUT_HANDLE);
+	char text[150];
+	DWORD count;
+	BOOL success;
 	va_list args;
 	int res;
 
 	va_start(args, format);
 	setcursor(x, y);
-	sukces = ReadConsole(klawiatura, tekst, 150, &znaki, NULL);
+	success = ReadConsole(keyboard, text, 150, &count, NULL);
 
-	if (!sukces) res = EOF;
+	if (!success) res = EOF;
 	else {
-		while (znaki > 0 && (tekst[znaki - 1] == '\n' || tekst[znaki - 1] == '\r')) znaki--;
-		tekst[znaki] = '\0';
-		res = vsscanf(tekst, format, args);
+		while (count > 0 && (text[count - 1] == '\n' || text[count - 1] == '\r')) count--;
+		text[count] = '\0';
+		res = vsscanf(text, format, args);
 	}
 
 	va_end(args);
@@ -59,21 +59,21 @@ int xyio::xyscanf(int x, int y, const char* format, ...) {
 }
 
 int xyio::xyprintf(int x, int y, const char* format, ...) {
-	HANDLE ekran = GetStdHandle(STD_OUTPUT_HANDLE);
-	char tekst[150];
-	DWORD znaki;
-	BOOL sukces;
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	char text[150];
+	DWORD count;
+	BOOL success;
 	va_list args;
 	int res;
 
 	va_start(args, format);
-	res = vsprintf(tekst, format, args);
+	res = vsprintf(text, format, args);
 
 	if (res >= 0) {
-		znaki = (DWORD)res;
+		count = (DWORD)res;
 		setcursor(x, y);
-		sukces = WriteConsole(ekran, tekst, znaki, NULL, NULL);
-		if (!sukces) res = EOF;
+		success = WriteConsole(screen, text, count, NULL, NULL);
+		if (!success) res = EOF;
 	}
 
 	va_end(args);
@@ -81,11 +81,11 @@ int xyio::xyprintf(int x, int y, const char* format, ...) {
 }
 
 void xyio::clear(void) {
-	HANDLE ekran = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO bufor;
-	COORD poczatek = { 0,0 };
-	DWORD znaki;
-	GetConsoleScreenBufferInfo(ekran, &bufor);
-	FillConsoleOutputCharacter(ekran, ' ', bufor.dwSize.X * bufor.dwSize.Y, poczatek, &znaki);
-	SetConsoleCursorPosition(ekran, poczatek);
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO buffer;
+	COORD start = { 0,0 };
+	DWORD count;
+	GetConsoleScreenBufferInfo(screen, &buffer);
+	FillConsoleOutputCharacter(screen, ' ', buffer.dwSize.X * buffer.dwSize.Y, start, &count);
+	SetConsoleCursorPosition(screen, start);
 }

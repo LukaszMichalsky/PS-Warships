@@ -2,13 +2,13 @@
 #include "server.h"
 
 void Server::drawPortInput() {
-	xyio::xyprintf(0, 0, "------------------------------------------");
-	xyio::xyprintf(0, 1, "  >> Initalize Server - Select Port       ");
-	xyio::xyprintf(0, 2, "------------------------------------------");
-	xyio::xyprintf(0, 3, "  >> Enter a port (between 1024 and 65535)");
-	xyio::xyprintf(0, 4, "  >> Enter 'quit' to leave to main menu   ");
-	xyio::xyprintf(0, 5, "------------------------------------------");
-	xyio::xyprintf(0, 6, "  >> ");
+	xyio::xyprintf(0, 0, "|------------------------------------------|");
+	xyio::xyprintf(0, 1, "|  >> Initalize Server - Select Port       |");
+	xyio::xyprintf(0, 2, "|------------------------------------------|");
+	xyio::xyprintf(0, 3, "|  >> Enter a port (between 1024 and 65535)|");
+	xyio::xyprintf(0, 4, "|  >> Enter 'quit' to leave to main menu   |");
+	xyio::xyprintf(0, 5, "|------------------------------------------|");
+	xyio::xyprintf(0, 6, "|  >> ");
 
 	char input[8] = {};
 	int selectedPort = 0;
@@ -39,9 +39,9 @@ void Server::initializeServer() {
 }
 
 void Server::initializeWinsock() {
-	xyio::xyprintf(0, 0, "-----------------------------------------------");
-	xyio::xyprintf(0, 1, "  >> Server initialization                     ");
-	xyio::xyprintf(0, 2, "-----------------------------------------------");
+	xyio::xyprintf(0, 0, "|-----------------------------------------------|");
+	xyio::xyprintf(0, 1, "|  >> Server initialization                     |");
+	xyio::xyprintf(0, 2, "|-----------------------------------------------|");
 
 	int initCode = WSAStartup(MAKEWORD(2, 2), NetworkConfiguration::wsaData);
 
