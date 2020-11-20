@@ -1,7 +1,6 @@
 #include "logic.h"
 #include "xyio.h"
 
-#include <stdexcept>
 #include <string>
 
 Board::Board(unsigned short newBoardSize) {
