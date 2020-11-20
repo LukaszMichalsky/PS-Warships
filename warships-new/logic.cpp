@@ -5,7 +5,7 @@
 
 Board::Board(unsigned short newBoardSize) {
 	boardSize = newBoardSize;
-	boardTable = new Ship * [newBoardSize];
+	boardTable = new Ship* [newBoardSize];
 
 	for (unsigned short s = 0; s < boardSize; s++) {
 		boardTable[s] = new Ship[boardSize];
@@ -33,14 +33,14 @@ bool Board::checkPointInBoard(Point point) {
 	return (x >= 0 && x < boardSize) && (y >= 0 && y < boardSize);
 }
 
-Ship Board::getShip(Point point) {
+Ship* Board::getShip(Point point) {
 	if (checkPointInBoard(point) == true) { // Check is coordinate exists
 		short x = point.getX();
 		short y = point.getY();
 
-		return boardTable[x][y];
+		return &boardTable[x][y];
 	} else {
-		return Ship(Point(), ShipState::STATE_INVALID); // Ship does not exist, error
+		return nullptr; // Ship does not exist, error
 	}
 }
 
@@ -53,18 +53,23 @@ void Board::drawBoard(int x, int y) {
 		xyio::xyprintf(x, y + 1 + 2 * s, std::string(4 + 4 * ((size_t)boardSize), (char)BoardCharacters::BOARD_HORIZONTAL_LINE).c_str());
 
 		for (unsigned short t = 0; t < boardSize + 1; t++) {
-			char shipCharacter = (char)BoardCharacters::SHIP_EMPTY;
-			ShipState shipState = getShip(Point(s - 1, t - 1)).getShipState();
+			char shipCharacter = (char) BoardCharacters::SHIP_EMPTY;
+			ShipState shipState = ShipState::STATE_EMPTY;
+			Ship* shipObject = getShip(Point(t - 1, s - 1));
 
-			if (shipState == ShipState::STATE_HIT) {
-				shipCharacter = (char)BoardCharacters::SHIP_HIT;
-			} else if (shipState == ShipState::STATE_MISSED_HIT) {
-				shipCharacter = (char)BoardCharacters::SHIP_MISSED_HIT;
-			} else if (shipState == ShipState::STATE_NOT_HIT) {
-				shipCharacter = (char)BoardCharacters::SHIP_NOT_HIT;
+			if (shipObject != nullptr) {
+				shipState = shipObject -> getShipState();
+
+				if (shipState == ShipState::STATE_HIT) {
+					shipCharacter = (char) BoardCharacters::SHIP_HIT;
+				} else if (shipState == ShipState::STATE_MISSED_HIT) {
+					shipCharacter = (char) BoardCharacters::SHIP_MISSED_HIT;
+				} else if (shipState == ShipState::STATE_NOT_HIT) {
+					shipCharacter = (char) BoardCharacters::SHIP_NOT_HIT;
+				}
 			}
 
-			xyio::xyprintf(x + 4 * t, y + 2 * s, " %c %c", shipCharacter, (char)BoardCharacters::BOARD_VERTICAL_LINE);
+			xyio::xyprintf(x + 4 * t, y + 2 * s, " %c %c", shipCharacter, (char) BoardCharacters::BOARD_VERTICAL_LINE);
 
 			if (s > 0 && t == 0) {
 				xyio::xyprintf(x, y + 2 * s, "%2d", s);
@@ -99,18 +104,26 @@ void Board::fillShips(ShipState newState) {
 }
 
 bool Board::isFieldValidForShip(Point point) {
-	std::vector<Ship> neighborShips = getNeighbors(point);
+	std::vector<Ship*> neighborShips = getNeighbors(point);
 
 	for (short s = 0; s < neighborShips.size(); s++) {
-		Ship ship = neighborShips[s];
-		ShipState state = ship.getShipState();
+		Ship* ship = neighborShips[s];
+		ShipState state = ShipState::STATE_EMPTY;
 
-		if (state == ShipState::STATE_HIT || state == ShipState::STATE_NOT_HIT) { // A ship is present in closest neighbor already
-			return false;
+		if (ship != nullptr) {
+			state = ship -> getShipState();
+
+			if (state == ShipState::STATE_HIT || state == ShipState::STATE_NOT_HIT) { // A ship is present in closest neighbor already
+				return false;
+			}
 		}
 	}
 
-	return getShip(point).getShipState() == ShipState::STATE_EMPTY; // Given field must be empty (cannot be invalid)
+	if (getShip(point) != nullptr) {
+		return getShip(point) -> getShipState() == ShipState::STATE_EMPTY; // Given field must be empty (cannot be invalid)
+	} else {
+		return false;
+	}
 }
 
 std::vector<Ship> Board::getNeighbors(Point point) {

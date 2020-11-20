@@ -44,6 +44,9 @@ class Board {
 		unsigned short boardSize = 0;
 
 		bool checkPointInBoard(Point point = Point());
+		bool setShip(Ship origin);
+
+		friend class ShipGroup;
 
 	public:
 		Board(unsigned short newBoardSize = 10);
@@ -52,16 +55,15 @@ class Board {
 		Board(const Board&) = delete; // Removing copy constructor and operator
 		Board& operator= (const Board&) = delete;
 
-		Ship getShip(Point point = Point());
+		Ship* getShip(Point point = Point());
 		unsigned short getBoardSize();
 
 		void drawBoard(int x, int y);
-		bool setShip(Ship origin);
 		void fillShips(ShipState newState = ShipState::STATE_EMPTY); // Fills entire board with given ship (may be used to create empty board)
 
 		bool isFieldValidForShip(Point point = Point());
-		std::vector<Ship> getNeighbors(Point point = Point()); // Returns ships in a 3x3 square with center of given point
-		std::vector<Ship> getStraightNeighbors(Point point = Point()); // Returns ships in closest neighbor fields (up, down, left, right)
+		bool shoot(Point point = Point()); // Shooting function, returns if the shoot has been done (if point was valid - not whether ship has been hit)
+		std::vector<Ship*> getNeighbors(Point point = Point()); // Returns ships in a 3x3 square with center of given point
 };
 
 class Ship {
@@ -89,11 +91,10 @@ class ShipGroup {
 		ShipDirection shipDirection = ShipDirection::DIRECTION_HORIZONTAL; // Ships are positioned horizontally by default
 
 	public:
-		// ShipGroup(Board* targetBoard = nullptr, Point topLeftPoint = Point(0, 0));
 		ShipGroup(const ShipGroup&) = delete; // Removing copy and move constructors, they are unnecessary
 		ShipGroup(ShipGroup&&) = delete;
 
-		ShipGroup& operator=(const ShipGroup&) = delete;
+		ShipGroup& operator=(const ShipGroup&) = delete; // Removing default copy and move operators
 		ShipGroup& operator=(ShipGroup&&) = delete;
 
 		static bool checkPosition(Board* targetBoard = nullptr, Point topLeftPoint = Point(0, 0), short shipSize = 1, ShipDirection shipDirection = ShipDirection::DIRECTION_HORIZONTAL);
