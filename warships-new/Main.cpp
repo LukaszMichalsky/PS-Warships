@@ -12,7 +12,7 @@ int main() {
 	// b.setShip(Ship(Point(1, 1), ShipState::STATE_NOT_HIT)); // Setting new ship in point (1, 1)
 	// b.drawBoard(0, 0); // Draw board from point (0, 0) - top left pixel
 
-	// Checking whether ship with size 5 can be placed on board 'b' in point (1, 1) <-- top/left point, horizontally
+	// Checking whether ship with size 5 can be placed on board 'b' in point (0, 0) <-- top/left point, horizontally
 	// bool canBePlaced = ShipGroup::checkPosition(&b, Point(0, 0), 10, ShipDirection::DIRECTION_HORIZONTAL);
 
 	return 0;
