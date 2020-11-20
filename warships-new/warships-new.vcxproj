@@ -154,7 +154,6 @@
     <ClInclude Include="netconf.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="server.h" />
-    <ClInclude Include="ship-state.h" />
     <ClInclude Include="logic.h" />
     <ClInclude Include="xyio.h" />
   </ItemGroup>

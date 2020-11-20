@@ -13,7 +13,7 @@ int main() {
 	// b.drawBoard(0, 0); // Draw board from point (0, 0) - top left pixel
 
 	// Checking whether ship with size 5 can be placed on board 'b' in point (0, 0) <-- top/left point, horizontally
-	// bool canBePlaced = ShipGroup::checkPosition(&b, Point(0, 0), 10, ShipDirection::DIRECTION_HORIZONTAL);
+	// bool canBePlaced = ShipGroup::checkPosition(&b, Point(0, 0), 5, ShipDirection::DIRECTION_HORIZONTAL);
 
 	return 0;
 }

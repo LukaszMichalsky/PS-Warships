@@ -47,9 +47,6 @@
     <ClInclude Include="point.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="ship-state.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
