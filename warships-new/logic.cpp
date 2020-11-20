@@ -50,7 +50,7 @@ unsigned short Board::getBoardSize() {
 
 void Board::drawBoard(int x, int y) {
 	for (unsigned short s = 0; s < boardSize + 1; s++) {
-		xyio::xyprintf(x, y + 1 + 2 * s, std::string(4 + 4 * ((size_t)boardSize), (char)BoardCharacters::BOARD_HORIZONTAL_LINE).c_str());
+		xyio::xyprintf(x, y + 1 + 2 * s, std::string(4 + 4 * ((size_t) boardSize), (char) BoardCharacters::BOARD_HORIZONTAL_LINE).c_str());
 
 		for (unsigned short t = 0; t < boardSize + 1; t++) {
 			char shipCharacter = (char) BoardCharacters::SHIP_EMPTY;
@@ -126,30 +126,32 @@ bool Board::isFieldValidForShip(Point point) {
 	}
 }
 
-std::vector<Ship> Board::getNeighbors(Point point) {
+bool Board::shoot(Point point) {
+	if (checkPointInBoard(point) == true) {
+		Ship* shipObject = getShip(point);
+
+		if (shipObject -> getShipState() == ShipState::STATE_NOT_HIT) {
+			shipObject -> setShipState(ShipState::STATE_HIT);
+		} else if (shipObject -> getShipState() == ShipState::STATE_EMPTY) {
+			shipObject -> setShipState(ShipState::STATE_MISSED_HIT);
+		}
+
+		return true;
+	} else {
+		return false;
+	}
+}
+
+std::vector<Ship*> Board::getNeighbors(Point point) {
 	short pointX = point.getX();
 	short pointY = point.getY();
-	std::vector<Ship> neighbors;
+	std::vector<Ship*> neighbors;
 
 	for (short x = -1; x < 2; x++) {
 		for (short y = -1; y < 2; y++) {
 			neighbors.push_back(getShip(Point(pointX + x, pointY + y)));
 		}
 	}
-
-	return neighbors;
-}
-
-std::vector<Ship> Board::getStraightNeighbors(Point point) {
-	short pointX = point.getX();
-	short pointY = point.getY();
-	std::vector<Ship> neighbors;
-
-	neighbors.push_back(getShip(Point(pointX, pointY - 1)));
-	neighbors.push_back(getShip(Point(pointX, pointY + 1)));
-
-	neighbors.push_back(getShip(Point(pointX - 1, pointY)));
-	neighbors.push_back(getShip(Point(pointX + 1, pointY)));
 
 	return neighbors;
 }
@@ -166,6 +168,10 @@ Point Ship::getPoint() {
 	return shipPoint;
 }
 
+ShipGroup* Ship::getShipGroup() {
+	return myGroup;
+}
+
 ShipState Ship::getShipState() {
 	return shipState;
 }
@@ -174,11 +180,70 @@ void Ship::setPoint(Point newPoint) {
 	shipPoint = newPoint;
 }
 
+void Ship::setShipGroup(ShipGroup* newGroup) {
+	myGroup = newGroup;
+}
+
 void Ship::setShipState(ShipState newState) {
 	shipState = newState;
 }
 
-// ShipGroup::ShipGroup(Board* targetBoard, Point topLeftPoint) {}
+ShipGroup::ShipGroup() {
+	// ShipGroup constructor, no additional code needed
+}
+
+ShipGroup* ShipGroup::add(Board* targetBoard, Point topLeftPoint, short shipSize, ShipDirection shipDirection) {
+	short pointX = topLeftPoint.getX();
+	short pointY = topLeftPoint.getY();
+	ShipGroup* newObject = nullptr;
+
+	if (targetBoard == nullptr || shipSize < 1) {
+		return nullptr;
+	}
+
+	if (checkPosition(targetBoard, topLeftPoint, shipSize, shipDirection) == false) {
+		return nullptr;
+	} else {
+		newObject = new ShipGroup();
+		newObject -> groupSize = shipSize;
+	}
+
+	switch (shipDirection) {
+		case ShipDirection::DIRECTION_HORIZONTAL: {
+			for (short s = 0; s < shipSize; s++) {
+				Point newPoint(pointX + s, pointY);
+				targetBoard -> setShip(Ship(newPoint, ShipState::STATE_NOT_HIT));
+
+				Ship* shipPointer = targetBoard -> getShip(newPoint);
+				shipPointer -> setShipGroup(newObject);
+
+				newObject -> shipObjects.push_back(shipPointer);
+			}
+
+			break;
+		}
+
+		case ShipDirection::DIRECTION_VERTICAL: {
+			for (short s = 0; s < shipSize; s++) {
+				Point newPoint(pointX, pointY + s);
+				targetBoard -> setShip(Ship(newPoint, ShipState::STATE_NOT_HIT));
+
+				Ship* shipPointer = targetBoard -> getShip(newPoint);
+				shipPointer -> setShipGroup(newObject);
+				newObject -> shipObjects.push_back(shipPointer);
+			}
+
+			break;
+		}
+
+		default: {
+			delete newObject;
+			return nullptr;
+		}
+	}
+
+	return newObject;
+}
 
 bool ShipGroup::checkPosition(Board* targetBoard, Point topLeftPoint, short shipSize, ShipDirection shipDirection) {
 	short pointX = topLeftPoint.getX();
@@ -223,6 +288,16 @@ ShipDirection ShipGroup::getDirection() {
 
 std::vector<Ship*> ShipGroup::getShipObjects() {
 	return shipObjects;
+}
+
+short ShipGroup::getShipsLeft() {
+	short shipsLeft = 0;
+
+	for (short s = 0; s < groupSize; s++) {
+		if (shipObjects[s] -> getShipState() == ShipState::STATE_NOT_HIT) shipsLeft++;
+	}
+
+	return shipsLeft;
 }
 
 short ShipGroup::getSize() {
