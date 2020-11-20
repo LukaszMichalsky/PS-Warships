@@ -1,6 +1,5 @@
 #include "common.h"
 
-
 void Common::drawMainMenu() {
 	xyio::xyprintf(0, 0, "|---------------------------------------|");
 	xyio::xyprintf(0, 1, "|-- Programowanie Systemowe - Projekt --|");

@@ -139,25 +139,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="board.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="netconf.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="server.cpp" />
-    <ClCompile Include="ship.cpp" />
+    <ClCompile Include="logic.cpp" />
     <ClCompile Include="xyio.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="board.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="netconf.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="server.h" />
     <ClInclude Include="ship-state.h" />
-    <ClInclude Include="ship.h" />
+    <ClInclude Include="logic.h" />
     <ClInclude Include="xyio.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
