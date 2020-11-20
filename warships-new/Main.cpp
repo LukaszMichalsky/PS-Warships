@@ -3,7 +3,7 @@
 #include "xyio.h"
 
 int main() {
-	// Common::drawMainMenu(); // Application entry point
+	Common::drawMainMenu(); // Application entry point
 
 	// Board b; // Creating default board (10x10)
 	// Board b(20); // Creating board with custom size (20x20)
