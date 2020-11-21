@@ -14,4 +14,6 @@ class Point {
 
 		void setX(short newX = 0);
 		void setY(short newY = 0);
+
+		bool equals(const Point& otherPoint);
 };

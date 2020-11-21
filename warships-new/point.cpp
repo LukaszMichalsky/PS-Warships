@@ -23,3 +23,7 @@ void Point::setX(short newX) {
 void Point::setY(short newY) {
 	Y = newY;
 }
+
+bool Point::equals(const Point& otherPoint) {
+	return (X == otherPoint.X) && (Y == otherPoint.Y);
+}
