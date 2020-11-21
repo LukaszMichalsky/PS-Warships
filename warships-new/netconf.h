@@ -18,9 +18,7 @@ class NetworkConfiguration {
 
 		static SOCKET listeningSocket;
 		static SOCKET clientSocket;
-		static SOCKET connectionSocket;
 
 		static int bufferLength;
 		static char receiveBuffer[];
-		static char sendBuffer[];
 };
