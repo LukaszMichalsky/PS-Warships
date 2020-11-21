@@ -1,5 +1,8 @@
 #include "xyio.h"
 
+WORD xyio::defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+WORD xyio::currentColor = xyio::defaultColor;
+
 void xyio::setcursor(int x, int y) {
 	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD point = { (SHORT)x, (SHORT)y };
@@ -66,6 +69,7 @@ int xyio::xyprintf(int x, int y, const char* format, ...) {
 	va_list args;
 	int res;
 
+	SetConsoleTextAttribute(screen, currentColor);
 	va_start(args, format);
 	res = vsprintf(text, format, args);
 
@@ -78,6 +82,14 @@ int xyio::xyprintf(int x, int y, const char* format, ...) {
 
 	va_end(args);
 	return res;
+}
+
+void xyio::setColor(WORD newColor) {
+	currentColor = newColor;
+}
+
+void xyio::resetColor() {
+	currentColor = defaultColor;
 }
 
 void xyio::clear(void) {

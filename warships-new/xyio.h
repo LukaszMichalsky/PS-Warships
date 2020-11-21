@@ -27,7 +27,12 @@ extern "C" {
 #endif
 
 class xyio {
+	private:
+		static WORD currentColor;
+
 	public:
+		static WORD defaultColor;
+
 		static void setcursor(int x, int y);
 		static void getcursor(int* x, int* y);
 
@@ -36,6 +41,9 @@ class xyio {
 
 		static int xyscanf(int x, int y, const char* format, ...);
 		static int xyprintf(int x, int y, const char* format, ...);
+
+		static void setColor(WORD newColor);
+		static void resetColor();
 
 		static void clear(void);
 };
