@@ -1,4 +1,9 @@
 #include "common.h"
+#include "logic.h"
+
+#include <cstdlib>
+#include <ctime>
+#include <string>
 
 void Common::drawMainMenu() {
 	xyio::xyprintf(0, 0, "|---------------------------------------|");
@@ -41,11 +46,68 @@ void Common::drawModeSelector() {
 	selectGameMode(selectedMode);
 }
 
+void Common::modeSelectorRandom() {
+	xyio::xyprintf(0, 0, "----------------------");
+	xyio::xyprintf(0, 1, "  >> Ships randomizer ");
+	xyio::xyprintf(0, 2, "----------------------");
+
+	Board randomizerBoard;
+	std::vector<short> shipsSizes = SHIPS;
+
+	randomizerBoard.fillShips();
+	randomizerBoard.drawBoard(2, 4);
+
+	xyio::xyprintf(50, 4, "Generating random ships...");
+	xyio::xyprintf(50, 5, "--------------------------");
+
+	for (short randomShip = 0; randomShip < shipsSizes.size(); randomShip++) {
+		std::srand(std::time(nullptr));
+
+		short currentSize = shipsSizes[randomShip];
+		xyio::xyprintf(50, 6 + randomShip, "  >> Generating ship with size %d...", currentSize);
+
+		while (true) {
+			short randomX = rand() % randomizerBoard.getBoardSize();
+			short randomY = rand() % randomizerBoard.getBoardSize();
+
+			Point randomPoint(randomX, randomY);
+			ShipDirection randomDirection = (rand() % 2 == 1) ? ShipDirection::DIRECTION_HORIZONTAL : ShipDirection::DIRECTION_VERTICAL;
+			bool ready = ShipGroup::checkPosition(&randomizerBoard, randomPoint, currentSize, randomDirection);
+			
+			if (ready == true) {
+				ShipGroup::add(&randomizerBoard, randomPoint, currentSize, randomDirection);
+				xyio::xyprintf(50, 6 + randomShip, "  >> Generating ship with size %d... Generated!", currentSize);
+
+				randomizerBoard.drawBoard(2, 4);
+				break;
+			}
+
+			Sleep(50);
+		}
+	}
+
+	int shift = shipsSizes.size();
+	xyio::xyprintf(50,  6 + shift, "---------------------------------");
+	xyio::xyprintf(50,  7 + shift, "  >> Generated all ships");
+	xyio::xyprintf(50,  8 + shift, "  >> Is this OK?");
+	xyio::xyprintf(50,  9 + shift, "    >> 1. Yes, I confirm");
+	xyio::xyprintf(50, 10 + shift, "    >> 2. No, randomize it again");
+	xyio::xyprintf(50, 11 + shift, "---------------------------------");
+	xyio::xyprintf(50, 12 + shift, "  >> ");
+
+	char input[8] = {};
+	int selectedOption = 0;
+	int readBytes = scanf_s("%s", input, 7);
+
+	selectedOption = atoi(input);
+	selectRandomizeAgain(shift, selectedOption, &randomizerBoard);
+}
+
 void Common::selectGameMode(int mode) {
 	switch (mode) {
 		case 1: {
 			xyio::clear();
-			drawModeSelector();
+			modeSelectorRandom();
 
 			break;
 		} case 2: {
@@ -84,5 +146,76 @@ void Common::selectMenuOption(int option) {
 
 			break;
 		}
+	}
+}
+
+void Common::selectRandomizeAgain(int ships, int option, Board* myBoard) {
+	switch (option) {
+		case 1: {
+			xyio::clear();
+			waitForSecondPlayer(myBoard);
+
+			break;
+		} case 2: {
+			xyio::clear();
+			modeSelectorRandom();
+
+			break;
+		} default: {
+			xyio::xyprintf(55, 12 + ships, "Invalid option, try again...");
+			Sleep(3000);
+
+			xyio::xyprintf(50, 12 + ships, (std::string("  >> ") + std::string(50, ' ')).c_str());
+			xyio::xyprintf(50, 12 + ships, "  >> ");
+
+			char input[8] = {};
+			int selectedOption = 0;
+			int readBytes = scanf_s("%s", input, 7);
+
+			selectedOption = atoi(input);
+			selectRandomizeAgain(ships, selectedOption, myBoard);
+
+			break;
+		}
+	}
+}
+
+void Common::restartGame() {
+	printf("  >> Would you like to start game again?\r\n");
+	printf("    >> 1. Yes\r\n");
+	printf("    >> Any other value will stop and exit\r\n");
+	printf("-----------------------------------------\r\n");
+	printf("    >> ");
+
+	char input[8] = {};
+	int selectedOption = 0;
+	int readBytes = scanf_s("%s", input, 7);
+
+	selectedOption = atoi(input);
+
+	if (selectedOption == 1) {
+		drawMainMenu();
+	} else {
+		ExitProcess(0);
+	}
+}
+
+void Common::waitForSecondPlayer(Board* playerBoard) {
+	xyio::xyprintf(0, 0, "----------------------------------------------");
+	xyio::xyprintf(0, 1, "  >> Waiting for second player to be ready... ");
+	xyio::xyprintf(0, 2, "----------------------------------------------");
+
+	int sendCode = send(NetworkConfiguration::clientSocket, "OK", NetworkConfiguration::bufferLength, NULL);
+	int readData = recv(NetworkConfiguration::clientSocket, NetworkConfiguration::receiveBuffer, NetworkConfiguration::bufferLength, NULL);
+
+	if (readData == -1 || readData == 0) {
+		xyio::xyprintf(0, 3, "  >> Player has disconnected");
+		xyio::xyprintf(0, 4, "");
+
+		restartGame();
+		closesocket(NetworkConfiguration::clientSocket);
+		WSACleanup();
+	} else {
+		xyio::xyprintf(0, 3, "  >> OK! Starting game...");
 	}
 }
