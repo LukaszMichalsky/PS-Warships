@@ -100,9 +100,9 @@ void Client::initializeWinsock() {
 	Sleep(2000);
 
 	for (ptr = result; ptr != NULL; ptr = ptr -> ai_next) {
-		NetworkConfiguration::connectionSocket = socket(ptr -> ai_family, ptr -> ai_socktype, ptr -> ai_protocol);
+		NetworkConfiguration::clientSocket = socket(ptr -> ai_family, ptr -> ai_socktype, ptr -> ai_protocol);
 
-		if (NetworkConfiguration::connectionSocket == INVALID_SOCKET) {
+		if (NetworkConfiguration::clientSocket == INVALID_SOCKET) {
 			xyio::xyprintf(0, 6, "    >> WSA failed (error ID %d)", WSAGetLastError());
 			WSACleanup();
 
@@ -111,16 +111,16 @@ void Client::initializeWinsock() {
 			drawHostInput();
 		}
 
-		int connectionCode = connect(NetworkConfiguration::connectionSocket, ptr -> ai_addr, (int) ptr -> ai_addrlen);
+		int connectionCode = connect(NetworkConfiguration::clientSocket, ptr -> ai_addr, (int) ptr -> ai_addrlen);
 
 		if (connectionCode == SOCKET_ERROR) {
-			closesocket(NetworkConfiguration::connectionSocket);
-			NetworkConfiguration::connectionSocket = INVALID_SOCKET;
+			closesocket(NetworkConfiguration::clientSocket);
+			NetworkConfiguration::clientSocket = INVALID_SOCKET;
 			continue;
 		}
 	}
 
-	if (NetworkConfiguration::connectionSocket == INVALID_SOCKET) {
+	if (NetworkConfiguration::clientSocket == INVALID_SOCKET) {
 		xyio::xyprintf(0, 6, "    >> Unable to connect to the server");
 		Sleep(3000);
 
@@ -128,9 +128,6 @@ void Client::initializeWinsock() {
 		freeaddrinfo(result);
 		drawHostInput();
 	} else {
-		sprintf_s(NetworkConfiguration::sendBuffer, NetworkConfiguration::bufferLength, "Hello!");
-		int sendCode = send(NetworkConfiguration::connectionSocket, NetworkConfiguration::sendBuffer, NetworkConfiguration::bufferLength, 0);
-
 		xyio::xyprintf(0, 6, "    >> Connected!");
 		freeaddrinfo(result);
 	}
