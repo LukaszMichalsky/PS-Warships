@@ -103,6 +103,45 @@ void Common::modeSelectorRandom() {
 	selectRandomizeAgain(shift, selectedOption, &randomizerBoard);
 }
 
+void Common::modeSelectorManual() {
+
+	
+		xyio::clear();
+		xyio::xyprintf(0, 0, "|------------------------------|");
+		xyio::xyprintf(0, 1, "|  >> Manually adding ships... |");
+		xyio::xyprintf(0, 2, "|------------------------------|");
+
+		
+		Board manualBoard;
+		std::vector<short> shipsSizes = SHIPS;
+
+		manualBoard.fillShips();
+		manualBoard.drawBoard(2, 5);
+
+		xyio::setcursor(6, 5);
+
+		for (short manualShip = 0; manualShip < shipsSizes.size(); manualShip++) {
+
+			char input[8] = {};
+			int readBytes = scanf_s("%s", input, 7);
+			int x, y;
+
+			if (strcmp(input, "q") != 0) {
+				if (sscanf(input, "%d %*1s %d", &x, &y) > 0) {
+					xyio::xyprintf(5, 6, "Adding new ship started at coordinates %d and %d...", x, y);
+					xyio::xyprintf(5, 7, "Which side does this ship end - down,up,left,right? D/U/L/R...");
+					Sleep(3000);
+				}
+				else {
+					xyio::xyprintf(5, 6, "Invalid option, try again...");
+					Sleep(3000);
+				}
+			}
+		}
+		
+}
+
+
 void Common::selectGameMode(int mode) {
 	switch (mode) {
 		case 1: {
@@ -112,7 +151,7 @@ void Common::selectGameMode(int mode) {
 			break;
 		} case 2: {
 			xyio::clear();
-			drawModeSelector();
+			modeSelectorManual();
 
 			break;
 		} default: {
@@ -124,6 +163,8 @@ void Common::selectGameMode(int mode) {
 		}
 	}
 }
+
+
 
 void Common::selectMenuOption(int option) {
 	switch (option) {
