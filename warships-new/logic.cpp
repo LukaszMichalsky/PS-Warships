@@ -56,20 +56,27 @@ void Board::drawBoard(int x, int y) {
 			char shipCharacter = (char) BoardCharacters::SHIP_EMPTY;
 			ShipState shipState = ShipState::STATE_EMPTY;
 			Ship* shipObject = getShip(Point(t - 1, s - 1));
+			WORD color = xyio::defaultColor;
 
 			if (shipObject != nullptr) {
 				shipState = shipObject -> getShipState();
 
 				if (shipState == ShipState::STATE_HIT) {
+					color = FOREGROUND_RED;
 					shipCharacter = (char) BoardCharacters::SHIP_HIT;
 				} else if (shipState == ShipState::STATE_MISSED_HIT) {
 					shipCharacter = (char) BoardCharacters::SHIP_MISSED_HIT;
 				} else if (shipState == ShipState::STATE_NOT_HIT) {
+					color = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 					shipCharacter = (char) BoardCharacters::SHIP_NOT_HIT;
 				}
 			}
 
-			xyio::xyprintf(x + 4 * t, y + 2 * s, " %c %c", shipCharacter, (char) BoardCharacters::BOARD_VERTICAL_LINE);
+			xyio::xyprintf(x + 4 * t, y + 2 * s, "   %c", (char) BoardCharacters::BOARD_VERTICAL_LINE);
+			xyio::setColor(color);
+
+			xyio::xyprintf(x + 4 * t, y + 2 * s, " %c ", shipCharacter);
+			xyio::resetColor();
 
 			if (s > 0 && t == 0) {
 				xyio::xyprintf(x, y + 2 * s, "%2d", s);

@@ -20,7 +20,6 @@ enum class ShipDirection { // Types required for positioning ships on board
 };
 
 enum class ShipSizes : short { // Predefined ship sizes, other sizes may be used too
-	TYPE_CARRIER = 5,
 	TYPE_BATTLESHIP = 4,
 	TYPE_DESTROYER = 3,
 	TYPE_SUBMARINE = 2,
