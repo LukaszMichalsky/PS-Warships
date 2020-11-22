@@ -6,6 +6,8 @@
 #include <string>
 
 void Common::drawMainMenu() {
+
+
 	xyio::xyprintf(0, 0, "|---------------------------------------|");
 	xyio::xyprintf(0, 1, "|-- Programowanie Systemowe - Projekt --|");
 	xyio::xyprintf(0, 2, "|---------------------------------------|");
@@ -15,8 +17,8 @@ void Common::drawMainMenu() {
 	xyio::xyprintf(0, 6, "|  >> 2 - Join to game (client)         |");
 	xyio::xyprintf(0, 7, "|  >> q - Exit program                  |");
 	xyio::xyprintf(0, 8, "|---------------------------------------|");
-	xyio::xyprintf(0, 9, "|  >> ");
-
+	xyio::xyprintf(0, 9, "| >>                                 << |");
+	xyio::setcursor(5,9);
 	char input[8] = {};
 	int selectedOption = 0;
 	int readBytes = scanf_s("%s", input, 7);
@@ -30,14 +32,15 @@ void Common::drawMainMenu() {
 }
 
 void Common::drawModeSelector() {
+
 	xyio::xyprintf(0, 0, "|------------------------------|");
-	xyio::xyprintf(0, 1, "|  >> Game mode selector       |");
+	xyio::xyprintf(0, 1, "|   >> Game mode selector <<   |");
 	xyio::xyprintf(0, 2, "|------------------------------|");
 	xyio::xyprintf(0, 3, "|  >> 1 - Generate random ships|");
 	xyio::xyprintf(0, 4, "|  >> 2 - Set ships manually   |");
 	xyio::xyprintf(0, 5, "|------------------------------|");
-	xyio::xyprintf(0, 6, "| >> ");
-
+	xyio::xyprintf(0, 6, "| >>                        << |");
+	xyio::setcursor(5,6);
 	char input[8] = {};
 	int selectedMode = 0;
 	int readBytes = scanf_s("%s", input, 7);
@@ -47,10 +50,10 @@ void Common::drawModeSelector() {
 }
 
 void Common::modeSelectorRandom() {
-	xyio::xyprintf(0, 0, "----------------------");
-	xyio::xyprintf(0, 1, "  >> Ships randomizer ");
-	xyio::xyprintf(0, 2, "----------------------");
-
+	xyio::xyprintf(0, 0, "------------------------");
+	xyio::xyprintf(0, 1, " >> Ships randomizer << ");
+	xyio::xyprintf(0, 2, "------------------------");
+						  
 	Board randomizerBoard;
 	std::vector<short> shipsSizes = SHIPS;
 
