@@ -118,18 +118,17 @@ void Common::modeSelectorManual() {
 		manualBoard.fillShips();
 		manualBoard.drawBoard(2, 5);
 
-		
+		char emptyLine[60];
+		memset(emptyLine, ' ', 59 * (sizeof emptyLine[0]));
+		emptyLine[59] = '\0';
 
 		for (short manualShip = 0; manualShip < shipsSizes.size(); manualShip++) {
 
-			char input[8] = {};
-			char emptyLine[60];
-			memset(emptyLine, ' ', 59 * (sizeof input[0]));
-			emptyLine[59] = '\0';
-			int x, y;
+			char input[8] = {};	
+			int startX, startY;
 			short currentSize = shipsSizes[manualShip];
-			char side;
-			xyio::xyprintf(50, 6, "|  x,y - First coordinates of %d-length ship ... |",currentSize);
+
+			xyio::xyprintf(50, 6, "|  x,y - Set TopLeft coordinates of %d-length ship ... |",currentSize);
 			xyio::xyprintf(50, 7, " %s", emptyLine);
 			xyio::xyprintf(50, 8, " %s", emptyLine);
 			xyio::xyprintf(50, 9, " %s", emptyLine);
@@ -139,11 +138,12 @@ void Common::modeSelectorManual() {
 			xyio::setcursor(56, 7);
 			int readBytes = scanf_s("%s", input, 7);
 
-			if (strcmp(input, "q") != 0) {
-				if (sscanf(input, "%d %*1s %d", &x, &y) > 0) {
+				if (sscanf(input, "%d %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point(startX,startY))) {
 					do {
-						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", x, y);
-						xyio::xyprintf(50, 9, "Which way the ship is situated - down,up,left,right? d/u/l/p");
+						Point startPoint(startX-1, startY-1);
+						
+						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", startX, startY);
+						xyio::xyprintf(50, 9, "Which way the ship is situated - horizontal or vertical? h/v");
 						xyio::xyprintf(50, 10, "  >> %s", emptyLine);
 						xyio::xyprintf(50, 11, " %s", emptyLine);
 						xyio::setcursor(56, 10);
@@ -152,17 +152,11 @@ void Common::modeSelectorManual() {
 						char selectedSide = input[0];
 						switch (selectedSide)
 						{
-						case 'd':
+						case 'h':
 							xyio::xyprintf(50, 11, "1char: %s", input);
 							break;
-						case 'u':
+						case 'v':
 							xyio::xyprintf(50, 11, "2char: %s", input);
-							break;
-						case 'l':
-							xyio::xyprintf(50, 11, "3char: %s", input);
-							break;
-						case 'p':
-							xyio::xyprintf(50, 11, "4char: %s", input);
 							break;
 						default:
 							xyio::xyprintf(50, 11, "Invalid option, try again...");
@@ -176,10 +170,10 @@ void Common::modeSelectorManual() {
 				else {
 					xyio::xyprintf(50, 11, "Invalid option, try again...");
 					manualShip--;
-					continue;
 					Sleep(3000);
+					continue;
+					
 				}
-			}
 		}
 		
 }
