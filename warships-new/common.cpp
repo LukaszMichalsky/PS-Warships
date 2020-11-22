@@ -118,22 +118,65 @@ void Common::modeSelectorManual() {
 		manualBoard.fillShips();
 		manualBoard.drawBoard(2, 5);
 
-		xyio::setcursor(6, 5);
+		
 
 		for (short manualShip = 0; manualShip < shipsSizes.size(); manualShip++) {
 
 			char input[8] = {};
-			int readBytes = scanf_s("%s", input, 7);
+			char emptyLine[60];
+			memset(emptyLine, ' ', 59 * (sizeof input[0]));
+			emptyLine[59] = '\0';
 			int x, y;
+			short currentSize = shipsSizes[manualShip];
+			char side;
+			xyio::xyprintf(50, 6, "|  x,y - First coordinates of %d-length ship ... |",currentSize);
+			xyio::xyprintf(50, 7, " %s", emptyLine);
+			xyio::xyprintf(50, 8, " %s", emptyLine);
+			xyio::xyprintf(50, 9, " %s", emptyLine);
+			xyio::xyprintf(50, 10, " %s", emptyLine);
+			xyio::xyprintf(50, 11, " %s", emptyLine);
+			xyio::xyprintf(50, 7 , "  >> ");
+			xyio::setcursor(56, 7);
+			int readBytes = scanf_s("%s", input, 7);
 
 			if (strcmp(input, "q") != 0) {
 				if (sscanf(input, "%d %*1s %d", &x, &y) > 0) {
-					xyio::xyprintf(5, 6, "Adding new ship started at coordinates %d and %d...", x, y);
-					xyio::xyprintf(5, 7, "Which side does this ship end - down,up,left,right? D/U/L/R...");
-					Sleep(3000);
+					do {
+						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", x, y);
+						xyio::xyprintf(50, 9, "Which way the ship is situated - down,up,left,right? d/u/l/p");
+						xyio::xyprintf(50, 10, "  >> %s", emptyLine);
+						xyio::xyprintf(50, 11, " %s", emptyLine);
+						xyio::setcursor(56, 10);
+						memset(input, 0, 7 * (sizeof input[0]));
+						int readBytes = scanf_s("%s", input, 7);
+						char selectedSide = input[0];
+						switch (selectedSide)
+						{
+						case 'd':
+							xyio::xyprintf(50, 11, "1char: %s", input);
+							break;
+						case 'u':
+							xyio::xyprintf(50, 11, "2char: %s", input);
+							break;
+						case 'l':
+							xyio::xyprintf(50, 11, "3char: %s", input);
+							break;
+						case 'p':
+							xyio::xyprintf(50, 11, "4char: %s", input);
+							break;
+						default:
+							xyio::xyprintf(50, 11, "Invalid option, try again...");
+							Sleep(3000);
+							continue;
+						}
+						break;
+					} while (true);
+					
 				}
 				else {
-					xyio::xyprintf(5, 6, "Invalid option, try again...");
+					xyio::xyprintf(50, 11, "Invalid option, try again...");
+					manualShip--;
+					continue;
 					Sleep(3000);
 				}
 			}
