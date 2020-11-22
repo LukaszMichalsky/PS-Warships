@@ -106,6 +106,82 @@ void Common::modeSelectorRandom() {
 	selectRandomizeAgain(shift, selectedOption, &randomizerBoard);
 }
 
+void Common::modeSelectorManual() {
+
+	
+		xyio::clear();
+		xyio::xyprintf(0, 0, "|------------------------------|");
+		xyio::xyprintf(0, 1, "|  >> Manually adding ships... |");
+		xyio::xyprintf(0, 2, "|------------------------------|");
+
+		
+		Board manualBoard;
+		std::vector<short> shipsSizes = SHIPS;
+
+		manualBoard.fillShips();
+		manualBoard.drawBoard(2, 5);
+
+		char emptyLine[60];
+		memset(emptyLine, ' ', 59 * (sizeof emptyLine[0]));
+		emptyLine[59] = '\0';
+
+		for (short manualShip = 0; manualShip < shipsSizes.size(); manualShip++) {
+
+			char input[8] = {};	
+			int startX, startY;
+			short currentSize = shipsSizes[manualShip];
+
+			xyio::xyprintf(50, 6, "|  x,y - Set TopLeft coordinates of %d-length ship ... |",currentSize);
+			xyio::xyprintf(50, 7, " %s", emptyLine);
+			xyio::xyprintf(50, 8, " %s", emptyLine);
+			xyio::xyprintf(50, 9, " %s", emptyLine);
+			xyio::xyprintf(50, 10, " %s", emptyLine);
+			xyio::xyprintf(50, 11, " %s", emptyLine);
+			xyio::xyprintf(50, 7 , "  >> ");
+			xyio::setcursor(56, 7);
+			int readBytes = scanf_s("%s", input, 7);
+
+				if (sscanf(input, "%d %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point(startX,startY))) {
+					do {
+						Point startPoint(startX-1, startY-1);
+						
+						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", startX, startY);
+						xyio::xyprintf(50, 9, "Which way the ship is situated - horizontal or vertical? h/v");
+						xyio::xyprintf(50, 10, "  >> %s", emptyLine);
+						xyio::xyprintf(50, 11, " %s", emptyLine);
+						xyio::setcursor(56, 10);
+						memset(input, 0, 7 * (sizeof input[0]));
+						int readBytes = scanf_s("%s", input, 7);
+						char selectedSide = input[0];
+						switch (selectedSide)
+						{
+						case 'h':
+							xyio::xyprintf(50, 11, "1char: %s", input);
+							break;
+						case 'v':
+							xyio::xyprintf(50, 11, "2char: %s", input);
+							break;
+						default:
+							xyio::xyprintf(50, 11, "Invalid option, try again...");
+							Sleep(3000);
+							continue;
+						}
+						break;
+					} while (true);
+					
+				}
+				else {
+					xyio::xyprintf(50, 11, "Invalid option, try again...");
+					manualShip--;
+					Sleep(3000);
+					continue;
+					
+				}
+		}
+		
+}
+
+
 void Common::selectGameMode(int mode) {
 	switch (mode) {
 		case 1: {
@@ -115,7 +191,7 @@ void Common::selectGameMode(int mode) {
 			break;
 		} case 2: {
 			xyio::clear();
-			drawModeSelector();
+			modeSelectorManual();
 
 			break;
 		} default: {
@@ -127,6 +203,8 @@ void Common::selectGameMode(int mode) {
 		}
 	}
 }
+
+
 
 void Common::selectMenuOption(int option) {
 	switch (option) {
