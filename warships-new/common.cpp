@@ -117,7 +117,7 @@ void Common::modeSelectorManual() {
 
 		manualBoard.fillShips();
 		manualBoard.drawBoard(2, 5);
-
+		bool isOk;
 		char emptyLine[60];
 		memset(emptyLine, ' ', 59 * (sizeof emptyLine[0]));
 		emptyLine[59] = '\0';
@@ -153,10 +153,32 @@ void Common::modeSelectorManual() {
 						switch (selectedSide)
 						{
 						case 'h':
-							xyio::xyprintf(50, 11, "1char: %s", input);
+							isOk = ShipGroup::checkPosition(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_HORIZONTAL);
+							if (isOk) {
+								ShipGroup::add(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_HORIZONTAL);
+								xyio::xyprintf(50, 11, "  >> Generating ship with size %d... Added!", currentSize);
+								manualBoard.drawBoard(2, 5);
+								Sleep(3000);
+							}
+							else {
+								xyio::xyprintf(50, 11, "Shop won't fit...");
+								Sleep(3000);
+								continue;
+							}
 							break;
 						case 'v':
-							xyio::xyprintf(50, 11, "2char: %s", input);
+							isOk = ShipGroup::checkPosition(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_VERTICAL);
+							if (isOk) {
+								ShipGroup::add(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_HORIZONTAL);
+								xyio::xyprintf(50, 11, "  >> Generating ship with size %d... Added!", currentSize);
+								manualBoard.drawBoard(2, 5);
+								Sleep(3000);
+							}
+							else {
+								xyio::xyprintf(50, 11, "Shop won't fit...");
+								Sleep(3000);
+								continue;
+							}
 							break;
 						default:
 							xyio::xyprintf(50, 11, "Invalid option, try again...");
