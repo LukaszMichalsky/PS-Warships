@@ -283,6 +283,14 @@ void Common::selectRandomizeAgain(int ships, int option, Board* myBoard) {
 	}
 }
 
+void Common::showLoser() {
+	// Window shown on lose
+};
+
+void Common::showWinner() {
+	// Window shown on win
+}
+
 void Common::restartGame() {
 	printf("  >> Would you like to start game again?\r\n");
 	printf("    >> 1. Yes\r\n");

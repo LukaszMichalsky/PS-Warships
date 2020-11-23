@@ -25,6 +25,9 @@ class Common {
 		static void selectMenuOption(int option);
 		static void selectRandomizeAgain(int ships, int option, Board* myBoard);
 
+		static void showLoser();
+		static void showWinner();
+
 		static void restartGame();
 
 		static void waitForSecondPlayer(Board* playerBoard);
