@@ -79,7 +79,7 @@ void Board::drawBoard(int x, int y) {
 			xyio::resetColor();
 
 			if (s > 0 && t == 0) {
-				xyio::xyprintf(x, y + 2 * s, "%2d", s);
+				xyio::xyprintf(x, y + 2 * s, "%2d", s - 1);
 			}
 
 			if (s == 0 && t > 0) {
@@ -133,20 +133,25 @@ bool Board::isFieldValidForShip(Point point) {
 	}
 }
 
-bool Board::shoot(Point point) {
+bool Board::shoot(bool& targetHit, Point point) {
+	bool wasHit = false;
+	bool wasShoot = false;
+
 	if (checkPointInBoard(point) == true) {
 		Ship* shipObject = getShip(point);
 
 		if (shipObject -> getShipState() == ShipState::STATE_NOT_HIT) {
 			shipObject -> setShipState(ShipState::STATE_HIT);
+			wasHit = true;
 		} else if (shipObject -> getShipState() == ShipState::STATE_EMPTY) {
 			shipObject -> setShipState(ShipState::STATE_MISSED_HIT);
 		}
 
-		return true;
-	} else {
-		return false;
+		wasShoot = true;
 	}
+
+	targetHit = wasHit; // Flag was the shoot missed or not
+	return wasShoot; // Flag was the shoot valid (in board point, or outside from it)
 }
 
 std::vector<Ship*> Board::getNeighbors(Point point) {

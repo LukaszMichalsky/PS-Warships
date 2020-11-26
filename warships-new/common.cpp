@@ -53,7 +53,7 @@ void Common::modeSelectorRandom() {
 	xyio::xyprintf(0, 0, "------------------------");
 	xyio::xyprintf(0, 1, " >> Ships randomizer << ");
 	xyio::xyprintf(0, 2, "------------------------");
-						  
+
 	Board randomizerBoard;
 	std::vector<short> shipsSizes = SHIPS;
 
@@ -76,7 +76,7 @@ void Common::modeSelectorRandom() {
 			Point randomPoint(randomX, randomY);
 			ShipDirection randomDirection = (rand() % 2 == 1) ? ShipDirection::DIRECTION_HORIZONTAL : ShipDirection::DIRECTION_VERTICAL;
 			bool ready = ShipGroup::checkPosition(&randomizerBoard, randomPoint, currentSize, randomDirection);
-			
+
 			if (ready == true) {
 				ShipGroup::add(&randomizerBoard, randomPoint, currentSize, randomDirection);
 				xyio::xyprintf(50, 6 + randomShip, "  >> Generating ship with size %d... Generated!", currentSize);
@@ -108,13 +108,13 @@ void Common::modeSelectorRandom() {
 
 void Common::modeSelectorManual() {
 
-	
+
 		xyio::clear();
 		xyio::xyprintf(0, 0, "|------------------------------|");
 		xyio::xyprintf(0, 1, "|  >> Manually adding ships... |");
 		xyio::xyprintf(0, 2, "|------------------------------|");
 
-		
+
 		Board manualBoard;
 		std::vector<short> shipsSizes = SHIPS;
 
@@ -127,7 +127,7 @@ void Common::modeSelectorManual() {
 
 		for (short manualShip = 0; manualShip < shipsSizes.size(); manualShip++) {
 
-			char input[8] = {};	
+			char input[8] = {};
 			int startX, startY;
 			short currentSize = shipsSizes[manualShip];
 
@@ -144,7 +144,7 @@ void Common::modeSelectorManual() {
 				if (sscanf(input, "%d %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point(startX,startY))) {
 					do {
 						Point startPoint(startX-1, startY-1);
-						
+
 						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", startX, startY);
 						xyio::xyprintf(50, 9, "Which way the ship is situated - horizontal or vertical? h/v");
 						xyio::xyprintf(50, 10, "  >> %s", emptyLine);
@@ -190,17 +190,17 @@ void Common::modeSelectorManual() {
 						}
 						break;
 					} while (true);
-					
+
 				}
 				else {
 					xyio::xyprintf(50, 11, "Invalid option, try again...");
 					manualShip--;
 					Sleep(3000);
 					continue;
-					
+
 				}
 		}
-		
+
 }
 
 
@@ -232,11 +232,13 @@ void Common::selectMenuOption(int option) {
 	switch (option) {
 		case 1: {
 			xyio::clear();
+			NetworkConfiguration::myRole = Role::ROLE_SERVER;
 			Server::initializeServer();
 
 			break;
 		} case 2: {
 			xyio::clear();
+			NetworkConfiguration::myRole = Role::ROLE_CLIENT;
 			Client::initializeClient();
 
 			break;
@@ -324,9 +326,14 @@ void Common::waitForSecondPlayer(Board* playerBoard) {
 		xyio::xyprintf(0, 4, "");
 
 		restartGame();
+		shutdown(NetworkConfiguration::clientSocket, SD_BOTH);
 		closesocket(NetworkConfiguration::clientSocket);
 		WSACleanup();
 	} else {
 		xyio::xyprintf(0, 3, "  >> OK! Starting game...");
+		Sleep(1000);
+
+		xyio::clear();
+		masterGameFunction(playerBoard);
 	}
 }

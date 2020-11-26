@@ -16,8 +16,10 @@ class Common {
 	public:
 		static void drawMainMenu();
 		static void drawModeSelector();
+		static void masterGameFunction(Board* playerBoard);
 
 	private:
+		// static void masterGameFunction(Board* playerBoard);
 		static void modeSelectorManual();
 		static void modeSelectorRandom();
 

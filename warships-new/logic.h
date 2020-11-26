@@ -61,7 +61,7 @@ class Board {
 		void fillShips(ShipState newState = ShipState::STATE_EMPTY); // Fills entire board with given ship (may be used to create empty board)
 
 		bool isFieldValidForShip(Point point = Point());
-		bool shoot(Point point = Point()); // Shooting function, returns if the shoot has been done (if point was valid - not whether ship has been hit)
+		bool shoot(bool& targetHit, Point point = Point()); // Shooting function, returns if the shoot has been done (if point was valid - not whether ship has been hit)
 		std::vector<Ship*> getNeighbors(Point point = Point()); // Returns ships in a 3x3 square with center of given point
 };
 

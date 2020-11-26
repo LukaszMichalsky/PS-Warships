@@ -10,6 +10,12 @@
 
 #include <ws2tcpip.h>
 
+enum class Role {
+	ROLE_CLIENT,
+	ROLE_DEFAULT,
+	ROLE_SERVER
+};
+
 class NetworkConfiguration {
 	public:
 		static CHAR host[64];
@@ -20,5 +26,6 @@ class NetworkConfiguration {
 		static SOCKET clientSocket;
 
 		static int bufferLength;
-		static char receiveBuffer[];
+		static char receiveBuffer[BUFFER_LENGTH];
+		static Role myRole;
 };
