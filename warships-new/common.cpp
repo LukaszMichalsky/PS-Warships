@@ -200,7 +200,8 @@ void Common::modeSelectorManual() {
 					
 				}
 		}
-		
+
+		Common::waitForSecondPlayer(&manualBoard);		
 }
 
 
