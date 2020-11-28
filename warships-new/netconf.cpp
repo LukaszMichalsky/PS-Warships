@@ -9,3 +9,4 @@ SOCKET NetworkConfiguration::clientSocket = INVALID_SOCKET;
 
 int NetworkConfiguration::bufferLength = BUFFER_LENGTH;
 char NetworkConfiguration::receiveBuffer[BUFFER_LENGTH] = {};
+Role NetworkConfiguration::myRole = Role::ROLE_DEFAULT;

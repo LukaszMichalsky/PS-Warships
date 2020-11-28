@@ -19,6 +19,7 @@ void Client::drawHostInput() {
 	if (strcmp(input, "quit") != 0) {
 		drawPortInput();
 	} else {
+		NetworkConfiguration::myRole = Role::ROLE_DEFAULT;
 		Common::drawMainMenu();
 	}
 }

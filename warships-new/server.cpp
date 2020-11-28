@@ -30,6 +30,7 @@ void Server::drawPortInput() {
 		}
 	} else {
 		xyio::clear();
+		NetworkConfiguration::myRole = Role::ROLE_DEFAULT;
 		Common::drawMainMenu();
 	}
 }
@@ -95,6 +96,7 @@ void Server::initializeWinsock() {
 		WSACleanup();
 
 		freeaddrinfo(result);
+		shutdown(NetworkConfiguration::listeningSocket, SD_BOTH);
 		closesocket(NetworkConfiguration::listeningSocket);
 
 		Sleep(3000);
@@ -111,6 +113,7 @@ void Server::initializeWinsock() {
 		WSACleanup();
 
 		freeaddrinfo(result);
+		shutdown(NetworkConfiguration::listeningSocket, SD_BOTH);
 		closesocket(NetworkConfiguration::listeningSocket);
 
 		Sleep(3000);
@@ -127,6 +130,7 @@ void Server::initializeWinsock() {
 		WSACleanup();
 
 		freeaddrinfo(result);
+		shutdown(NetworkConfiguration::listeningSocket, SD_BOTH);
 		closesocket(NetworkConfiguration::listeningSocket);
 
 		Sleep(3000);
