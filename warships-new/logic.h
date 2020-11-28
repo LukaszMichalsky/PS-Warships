@@ -8,6 +8,7 @@ enum class BoardCharacters : char {
 	BOARD_HORIZONTAL_LINE = '-',
 	BOARD_VERTICAL_LINE = '|',
 
+	SHIP_DROWNED = 'X',
 	SHIP_EMPTY = ' ',
 	SHIP_HIT = 'X',
 	SHIP_MISSED_HIT = 'O',
@@ -30,7 +31,8 @@ enum class ShipState {
 	STATE_EMPTY = 0x10, // Field is empty (no ship in it)
 	STATE_MISSED_HIT = 0x20, // Field which was tried to hit, but there was no ship.
 	STATE_NOT_HIT = 0x30, // Field contains ship which is not hit yet
-	STATE_HIT = 0x40 // Field contains ship after being hit
+	STATE_HIT = 0x40, // Field contains ship after being hit
+	STATE_DROWNED = 0x50 // Ship drowned (destroyed)
 };
 
 class Board;
@@ -45,6 +47,7 @@ class Board {
 		bool checkPointInBoard(Point point = Point());
 		bool setShip(Ship origin);
 
+		friend class Ship;
 		friend class ShipGroup;
 
 	public:

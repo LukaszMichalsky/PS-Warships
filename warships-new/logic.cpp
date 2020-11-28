@@ -69,6 +69,9 @@ void Board::drawBoard(int x, int y) {
 				} else if (shipState == ShipState::STATE_NOT_HIT) {
 					color = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 					shipCharacter = (char) BoardCharacters::SHIP_NOT_HIT;
+				} else if (shipState == ShipState::STATE_DROWNED) {
+					color = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+					shipCharacter = (char) BoardCharacters::SHIP_DROWNED;
 				}
 			}
 
@@ -143,6 +146,12 @@ bool Board::shoot(bool& targetHit, Point point) {
 		if (shipObject -> getShipState() == ShipState::STATE_NOT_HIT) {
 			shipObject -> setShipState(ShipState::STATE_HIT);
 			wasHit = true;
+
+			if (shipObject -> getShipGroup() -> getShipsLeft() == 0) {
+				for (Ship* ship : shipObject -> getShipGroup() -> getShipObjects()) {
+					ship -> setShipState(ShipState::STATE_DROWNED);
+				}
+			}
 		} else if (shipObject -> getShipState() == ShipState::STATE_EMPTY) {
 			shipObject -> setShipState(ShipState::STATE_MISSED_HIT);
 		}

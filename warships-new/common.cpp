@@ -297,11 +297,21 @@ void Common::selectRandomizeAgain(int ships, int option, Board* myBoard) {
 }
 
 void Common::showLoser() {
-	// Window shown on lose
+	xyio::xyprintf(0, 0, "------------------------------------------------");
+	xyio::xyprintf(0, 1, "Game lost, all your ships have been destroyed...");
+	xyio::xyprintf(0, 2, "------------------------------------------------");
+	xyio::xyprintf(0, 3, "");
+
+	restartGame();
 };
 
 void Common::showWinner() {
-	// Window shown on win
+	xyio::xyprintf(0, 0, "-----------------------------------------------");
+	xyio::xyprintf(0, 1, "Game over! You are the winner! CONGRATULATIONS!");
+	xyio::xyprintf(0, 2, "-----------------------------------------------");
+	xyio::xyprintf(0, 3, "");
+
+	restartGame();
 }
 
 void Common::restartGame() {
@@ -318,6 +328,7 @@ void Common::restartGame() {
 	selectedOption = atoi(input);
 
 	if (selectedOption == 1) {
+		xyio::clear();
 		drawMainMenu();
 	} else {
 		ExitProcess(0);
