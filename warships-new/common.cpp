@@ -137,19 +137,23 @@ void Common::modeSelectorManual() {
 			xyio::xyprintf(50, 9, " %s", emptyLine);
 			xyio::xyprintf(50, 10, " %s", emptyLine);
 			xyio::xyprintf(50, 11, " %s", emptyLine);
+			xyio::xyprintf(50, 12, " %s", emptyLine);
+
 			xyio::xyprintf(50, 7 , "  >> ");
 			xyio::setcursor(56, 7);
 			int readBytes = scanf_s("%s", input, 7);
 
 				if (sscanf(input, "%d %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point(startX,startY))) {
 					do {
-						Point startPoint(startX-1, startY-1);
+						Point startPoint(startX, startY);
 
 						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", startX, startY);
 						xyio::xyprintf(50, 9, "Which way the ship is situated - horizontal or vertical? h/v");
-						xyio::xyprintf(50, 10, "  >> %s", emptyLine);
-						xyio::xyprintf(50, 11, " %s", emptyLine);
-						xyio::setcursor(56, 10);
+						xyio::xyprintf(50, 10, "Press q to cancel choice.");
+						xyio::xyprintf(50, 11, "  >> %s", emptyLine);
+						xyio::xyprintf(50, 12, " %s", emptyLine);
+
+						xyio::setcursor(56, 11);
 						memset(input, 0, 7 * (sizeof input[0]));
 						int readBytes = scanf_s("%s", input, 7);
 						char selectedSide = input[0];
@@ -159,7 +163,7 @@ void Common::modeSelectorManual() {
 							isOk = ShipGroup::checkPosition(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_HORIZONTAL);
 							if (isOk) {
 								ShipGroup::add(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_HORIZONTAL);
-								xyio::xyprintf(50, 11, "  >> Generating ship with size %d... Added!", currentSize);
+								xyio::xyprintf(50, 12, "  >> Generating ship with size %d... Added!", currentSize);
 								manualBoard.drawBoard(2, 5);
 								Sleep(3000);
 							}
@@ -172,19 +176,24 @@ void Common::modeSelectorManual() {
 						case 'v':
 							isOk = ShipGroup::checkPosition(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_VERTICAL);
 							if (isOk) {
-								ShipGroup::add(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_HORIZONTAL);
-								xyio::xyprintf(50, 11, "  >> Generating ship with size %d... Added!", currentSize);
+								ShipGroup::add(&manualBoard, startPoint, currentSize, ShipDirection::DIRECTION_VERTICAL);
+								xyio::xyprintf(50, 12, "  >> Generating ship with size %d... Added!", currentSize);
 								manualBoard.drawBoard(2, 5);
 								Sleep(3000);
 							}
 							else {
-								xyio::xyprintf(50, 11, "Shop won't fit...");
+								xyio::xyprintf(50, 12, "Ship won't fit...");
 								Sleep(3000);
 								continue;
 							}
 							break;
+						case 'q':
+							xyio::xyprintf(50, 12, "Canceling...");
+							manualShip--;
+							Sleep(3000);
+							break;
 						default:
-							xyio::xyprintf(50, 11, "Invalid option, try again...");
+							xyio::xyprintf(50, 12, "Wrong direction, try again...");
 							Sleep(3000);
 							continue;
 						}
@@ -193,7 +202,7 @@ void Common::modeSelectorManual() {
 
 				}
 				else {
-					xyio::xyprintf(50, 11, "Invalid option, try again...");
+					xyio::xyprintf(50, 12, "Invalid position, try again...");
 					manualShip--;
 					Sleep(3000);
 					continue;
