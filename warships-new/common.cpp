@@ -297,19 +297,19 @@ void Common::selectRandomizeAgain(int ships, int option, Board* myBoard) {
 }
 
 void Common::showLoser() {
-	xyio::xyprintf(0, 0, "------------------------------------------------");
-	xyio::xyprintf(0, 1, "Game lost, all your ships have been destroyed...");
-	xyio::xyprintf(0, 2, "------------------------------------------------");
-	xyio::xyprintf(0, 3, "");
+	xyio::centerprintf(0, "|--------------------------------------------------------|");
+	xyio::centerprintf(1, "| >> Game lost, all your ships have been destroyed... << |");
+	xyio::centerprintf(2, "|--------------------------------------------------------|");
+	xyio::centerprintf(3, "");
 
 	restartGame();
 };
 
 void Common::showWinner() {
-	xyio::xyprintf(0, 0, "-----------------------------------------------");
-	xyio::xyprintf(0, 1, "Game over! You are the winner! CONGRATULATIONS!");
-	xyio::xyprintf(0, 2, "-----------------------------------------------");
-	xyio::xyprintf(0, 3, "");
+	xyio::centerprintf(0, "|-------------------------------------------------------|");
+	xyio::centerprintf(1, "| >> Game over! You are the winner! CONGRATULATIONS! << |");
+	xyio::centerprintf(2, "|-------------------------------------------------------|");
+	xyio::centerprintf(3, "");
 
 	restartGame();
 }
