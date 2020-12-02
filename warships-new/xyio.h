@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstdarg>
+#include <string>
 using namespace std;
 #endif
 #include <windows.h>
@@ -29,8 +30,10 @@ extern "C" {
 class xyio {
 	private:
 		static WORD currentColor;
+		
 
 	public:
+		
 		static WORD defaultColor;
 
 		static void setcursor(int x, int y);
@@ -39,6 +42,8 @@ class xyio {
 		static void getrange(int* maxx, int* maxy);
 		static void getscreen(int* xorg, int* yorg, int* xend, int* yend);
 
+
+		static int centerprintf(int y,const char* format, ...);
 		static int xyscanf(int x, int y, const char* format, ...);
 		static int xyprintf(int x, int y, const char* format, ...);
 

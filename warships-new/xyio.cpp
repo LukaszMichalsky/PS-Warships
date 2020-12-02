@@ -61,6 +61,36 @@ int xyio::xyscanf(int x, int y, const char* format, ...) {
 	return res;
 }
 
+
+int xyio::centerprintf(int y, const char* format, ...) {
+	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
+	char text[150];
+	DWORD count;
+	BOOL success;
+	va_list args;
+	int res, x, maxx, maxy;
+	string str = format;
+	getrange(&maxx, &maxy);
+	x = (maxx - str.length()) / 2;
+	SetConsoleTextAttribute(screen, currentColor);
+	va_start(args, format);
+	res = vsprintf(text, format, args);
+
+	if (res >= 0) {
+		count = (DWORD)res;
+		setcursor(x, y);
+		success = WriteConsole(screen, text, count, NULL, NULL);
+		if (!success) res = EOF;
+	}
+	setcursor(x+5,y);
+	va_end(args);
+	return res;
+
+}
+
+
+
+
 int xyio::xyprintf(int x, int y, const char* format, ...) {
 	HANDLE screen = GetStdHandle(STD_OUTPUT_HANDLE);
 	char text[150];
