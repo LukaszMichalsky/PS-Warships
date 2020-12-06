@@ -128,7 +128,8 @@ void Common::modeSelectorManual() {
 		for (short manualShip = 0; manualShip < shipsSizes.size(); manualShip++) {
 
 			char input[8] = {};
-			int startX, startY;
+			char startX;
+			int startY;
 			short currentSize = shipsSizes[manualShip];
 
 			xyio::xyprintf(50, 6, "|  x,y - Set TopLeft coordinates of %d-length ship ... |",currentSize);
@@ -143,11 +144,11 @@ void Common::modeSelectorManual() {
 			xyio::setcursor(56, 7);
 			int readBytes = scanf_s("%s", input, 7);
 
-				if (sscanf(input, "%d %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point(startX,startY))) {
+				if (sscanf(input, "%c %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point((int)startX-97,startY))) {
 					do {
-						Point startPoint(startX, startY);
+						Point startPoint((int)startX-97, startY);
 
-						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %d and %d...", startX, startY);
+						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %c and %d...", startX, startY);
 						xyio::xyprintf(50, 9, "Which way the ship is situated - horizontal or vertical? h/v");
 						xyio::xyprintf(50, 10, "Press q to cancel choice.");
 						xyio::xyprintf(50, 11, "  >> %s", emptyLine);
@@ -210,6 +211,13 @@ void Common::modeSelectorManual() {
 				}
 		}
 
+		xyio::xyprintf(50, 6, " %s", emptyLine);
+		xyio::xyprintf(50, 7, " %s", emptyLine);
+		xyio::xyprintf(50, 8, " %s", emptyLine);
+		xyio::xyprintf(50, 9, " %s", emptyLine);
+		xyio::xyprintf(50, 10, " %s", emptyLine);
+		xyio::xyprintf(50, 11, " %s", emptyLine);
+		xyio::xyprintf(50, 12, " %s", emptyLine);
 		Common::waitForSecondPlayer(&manualBoard);		
 
 }
