@@ -82,7 +82,7 @@ void Board::drawBoard(int x, int y) {
 			xyio::resetColor();
 
 			if (s > 0 && t == 0) {
-				xyio::xyprintf(x, y + 2 * s, "%2d", s - 1);
+				xyio::xyprintf(x, y + 2 * s, "%2d", s);
 			}
 
 			if (s == 0 && t > 0) {
