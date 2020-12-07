@@ -108,7 +108,7 @@ void drawOpponentBoard(Board* opponentBoard) {
 	}
 }
 
-void getCoordinates(Board* playerBoard, int& outX, int& outY) { // Returns entered coordinates (as references) in range from 0 to 'board size' - 1 (e.g. from 1 to 10 in 10x10 board)
+void getCoordinates(Board* playerBoard, int& outX, int& outY) { // Returns entered coordinates (as references) in range from 1 to 'board size' (e.g. from 1 to 10 in 10x10 board)
 	char X = ' ';
 	int Y = 0;
 
