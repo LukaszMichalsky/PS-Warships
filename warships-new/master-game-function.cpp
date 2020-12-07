@@ -108,20 +108,20 @@ void drawOpponentBoard(Board* opponentBoard) {
 	}
 }
 
-void getCoordinates(Board* playerBoard, int& outX, int& outY) { // Returns entered coordinates (as references) in range from 0 to 'board size' - 1 (e.g. from 0 to 9 in 10x10 board)
-	char input[8] = {};
-	int readBytes = scanf_s("%s", input, 7);
+void getCoordinates(Board* playerBoard, int& outX, int& outY) { // Returns entered coordinates (as references) in range from 0 to 'board size' - 1 (e.g. from 1 to 10 in 10x10 board)
+	char X = ' ';
+	int Y = 0;
+
+	int readBytes = scanf("%c%d", &X, &Y);
 	int initX = -1, initY = -1;
+	
+	X = X - 'a';
+	Y = Y - 1;
 
-	if (strlen(input) == 2) {
-		int X = input[0] - 'a';
-		int Y = input[1] - '0';
-
-		if (X >= 0 && X <= playerBoard -> getBoardSize() - 1) {
-			if (Y >= 0 && Y <= playerBoard -> getBoardSize() - 1) {
-				initX = X;
-				initY = Y;
-			}
+	if (X >= 0 && X <= playerBoard -> getBoardSize() - 1) {
+		if (Y >= 0 && Y <= playerBoard -> getBoardSize() - 1) {
+			initX = (int) X;
+			initY = Y;
 		}
 	}
 
@@ -198,7 +198,7 @@ void yourTurn(Board* playerBoard, Board* opponentBoard) {
 	int shootX = 0, shootY = 0;
 	bool wasHit = false;
 
-	xyio::xyprintf(1, playerBoard -> getBoardSize() * 2 + 6, "  >> Your turn! Enter coordinate (e.g. a0, f9, h3, ...): ");
+	xyio::xyprintf(1, playerBoard -> getBoardSize() * 2 + 6, "  >> Your turn! Enter coordinate (e.g. a1, f10, h3, ...): ");
 	getCoordinates(playerBoard, shootX, shootY);
 
 	while (shootX == -1 || shootY == -1) {
