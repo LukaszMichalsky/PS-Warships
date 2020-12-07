@@ -144,9 +144,9 @@ void Common::modeSelectorManual() {
 			xyio::setcursor(56, 7);
 			int readBytes = scanf_s("%s", input, 7);
 
-				if (sscanf(input, "%c %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point((int)startX-97,startY))) {
+				if (sscanf(input, "%c %*1s %d", &startX, &startY) > 0 && manualBoard.isFieldValidForShip(Point((int)startX-97,startY-1))) {
 					do {
-						Point startPoint((int)startX-97, startY);
+						Point startPoint((int)startX-97, startY-1);
 
 						xyio::xyprintf(50, 8, "Adding new ship started at coordinates %c and %d...", startX, startY);
 						xyio::xyprintf(50, 9, "Which way the ship is situated - horizontal or vertical? h/v");
